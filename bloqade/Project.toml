@@ -1,0 +1,7 @@
+[deps]
+Adapt = "79e6a3ab-5dfb-504d-930d-738a2a938a0e"
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+Bloqade = "bd27d05e-4ce1-5e79-84dd-c5d7d508bbe1"
+BloqadeCUDA = "bd27d05e-4ce1-5e79-84dd-c5d7d508bbe3"
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"

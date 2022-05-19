@@ -1,0 +1,8 @@
+name = "BenchmarkCLI"
+uuid = "02860bad-1aa6-4506-8732-4a3616c18085"
+version = "0.1.0"
+
+[deps]
+Comonicon = "863f3e99-da2a-4334-8734-de3dacbe5542"
+CondaPkg = "992eb4ea-22a4-4c89-a5bb-47a3300528ab"
+Configurations = "5218b696-f38b-4ac9-8b61-a12ec717816d"

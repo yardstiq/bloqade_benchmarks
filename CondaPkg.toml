@@ -1,0 +1,7 @@
+[deps]
+matplotlib = ""
+
+[pip.deps]
+pulser = ""
+quspin = ""
+qutip = ""

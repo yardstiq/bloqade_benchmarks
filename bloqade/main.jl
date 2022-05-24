@@ -6,6 +6,8 @@ using BloqadeCUDA
 using BenchmarkTools
 CUDA.allowscalar(false)
 
+@info "package loaded"
+
 # Define the pulse by specifying a maximum omega and delta.
 # Note that these parameters are computed using pulser_compare.py
 Omega_max= 9.179086064116243
@@ -47,6 +49,8 @@ function ring_benchmark_problem(nsites::Int, distance::Float64)
     reg = zero_state(nsites);
     return SchrodingerProblem(reg, total_time, h)
 end
+
+@info "benchmark start"
 
 nqubits = 4:25
 results = Dict{String, Any}()

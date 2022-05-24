@@ -48,43 +48,47 @@ function ring_benchmark_problem(nsites::Int, distance::Float64)
     return SchrodingerProblem(reg, total_time, h)
 end
 
-@info "setting up problems"
 nqubits = 4:25
-problems = Dict()
-problems["ring"] = map(nqubits) do n
-    ring_benchmark_problem(n, 9.0)
-end
-
-problems["chain"] = map(nqubits) do n
-    chain_benchmark_problem(n, 5.7)
-end
-
 results = Dict{String, Any}()
-
-@info "benchmarking CPU"
-results["ring (CPU)"] = map(problems["ring"]) do prob
+results["ring (CPU)"] = map(nqubits) do n
+    prob = ring_benchmark_problem(n, 9.0)
     @info "benchmarking..." prob
     t = @benchmark emulate!($prob) setup=(set_zero_state!($(prob.reg)))
     minimum(t).time
 end
 
-@info "benchmarking CUDA"
-results["ring (CUDA)"] = map(problems["ring"]) do prob
+results["ring (CUDA)"] = map(nqubits) do n
+    prob = ring_benchmark_problem(n, 9.0)
     dprob = adapt(CuArray, prob)
     @info "benchmarking..." prob=dprob
     t = @benchmark CUDA.@sync(emulate!($dprob)) setup=(set_zero_state!($(dprob.reg)))
     minimum(t).time
 end
 
-@info "benchmarking CPU"
-results["chain (CPU)"] = map(problems["chain"]) do prob
+results["chain (CPU)"] = map(nqubits) do n
+    prob = chain_benchmark_problem(n, 5.7)
     @info "benchmarking..." prob
     t = @benchmark emulate!($prob) setup=(set_zero_state!($(prob.reg)))
     minimum(t).time
 end
 
-@info "benchmarking CUDA"
-results["chain (CUDA)"] = map(problems["chain"]) do prob
+results["chain (CUDA)"] = map(nqubits) do n
+    prob = chain_benchmark_problem(n, 5.7)
+    dprob = adapt(CuArray, prob)
+    @info "benchmarking..." prob=dprob
+    t = @benchmark CUDA.@sync(emulate!($dprob)) setup=(set_zero_state!($(dprob.reg)))
+    minimum(t).time
+end
+
+results["chain (subspace,CPU)"] = map(nqubits) do n
+    prob = chain_benchmark_subspace_problem(n, 5.7)
+    @info "benchmarking..." prob
+    t = @benchmark emulate!($prob) setup=(set_zero_state!($(prob.reg)))
+    minimum(t).time
+end
+
+results["chain (subspace,CUDA)"] = map(nqubits) do n
+    prob = chain_benchmark_subspace_problem(n, 5.7)
     dprob = adapt(CuArray, prob)
     @info "benchmarking..." prob=dprob
     t = @benchmark CUDA.@sync(emulate!($dprob)) setup=(set_zero_state!($(dprob.reg)))

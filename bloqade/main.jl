@@ -29,6 +29,14 @@ function chain_benchmark_problem(nsites::Int, distance::Float64)
     return SchrodingerProblem(reg, total_time, h)
 end
 
+function chain_benchmark_subspace_problem(nsites::Int, distance::Float64)
+    atoms = generate_sites(ChainLattice(), nsites, scale=distance)
+    space = blockade_subspace(atoms, distance)
+    h = rydberg_h(atoms; C = 5420158.53 , Δ, Ω)
+    reg = zero_state(space);
+    return SchrodingerProblem(reg, total_time, h)
+end
+
 function ring_benchmark_problem(nsites::Int, distance::Float64)
     R = distance/(2*sin(2*pi/(nsites)/2))                                       # Radius of the circle, using a little trigonometry
     pos = [(R*sin(i*2*pi/(nsites)), R*cos(i*2*pi/(nsites)) ) for i in 1:nsites] # Positions of each atom

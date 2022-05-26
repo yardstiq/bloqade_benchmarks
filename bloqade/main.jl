@@ -3,8 +3,14 @@ using CUDA
 using Adapt
 using Bloqade
 using BloqadeCUDA
+using Logging
+using TerminalLoggers
 using BenchmarkTools
 CUDA.allowscalar(false)
+
+
+log_stream = open("benchmark.log", "w+")
+Base.global_logger(TerminalLogger(log_stream; always_flush=true))
 
 @info "package loaded"
 
@@ -52,7 +58,7 @@ end
 
 @info "benchmark start"
 
-nqubits = 4:25
+nqubits = 4:22
 results = Dict{String, Any}()
 results["ring (CPU)"] = map(nqubits) do n
     prob = ring_benchmark_problem(n, 9.0)
@@ -84,6 +90,7 @@ results["chain (CUDA)"] = map(nqubits) do n
     minimum(t).time
 end
 
+nqubits = 4:25
 results["chain (subspace,CPU)"] = map(nqubits) do n
     prob = chain_benchmark_subspace_problem(n, 5.7)
     @info "benchmarking..." prob

@@ -80,7 +80,7 @@ def generate_ring_seq(L):
 
 
 # Simulate evolution
-nqubits_list = range(4,21) # 4:25
+nqubits_list = range(4,21) # 4:20
 @pytest.mark.parametrize('nqubits', nqubits_list)
 def test_sim(benchmark, nqubits):
     benchmark.group = "ring"

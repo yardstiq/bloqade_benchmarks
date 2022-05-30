@@ -81,7 +81,7 @@ if isfile("data.json")
     rm("data.json")
 end
 
-nqubits = 4:22
+nqubits = 4:20
 results = Dict{String, Any}()
 results["ring (CPU)"] = map(nqubits) do n
     prob = ring_benchmark_problem(n, 9.0)
@@ -121,7 +121,6 @@ end
 
 flush_data(results)
 
-nqubits = 4:25
 results["chain (subspace,CPU)"] = map(nqubits) do n
     prob = chain_benchmark_subspace_problem(n, 5.7)
     @info "benchmarking..." prob

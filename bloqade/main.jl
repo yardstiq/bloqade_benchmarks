@@ -8,9 +8,13 @@ using TerminalLoggers
 using BenchmarkTools
 CUDA.allowscalar(false)
 
+timestamp_logger(logger) = TransformerLogger(logger) do log
+    date_info = Dates.format(now(), "yyyy-mm-dd HH:MM:SS")
+    merge(log, (; message = "$date_info $(log.message)"))
+end
 
 log_stream = open("benchmark.log", "w+")
-Base.global_logger(TerminalLogger(log_stream; always_flush=true))
+TerminalLogger(log_stream; always_flush=true) |> timestamp_logger |> Base.global_logger
 
 @info "package loaded"
 

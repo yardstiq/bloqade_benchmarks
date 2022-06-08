@@ -41,6 +41,10 @@ Toolchain:
 
 ### Package Specifications and Evnironments
 
+All non-specified options are default, e.g Julia
+compiler optimization level is set to the default
+`O2`, qutip/pulser is setup using the default build from `pip`.
+
 #### Environment Variables
 
 ```

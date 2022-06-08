@@ -39,6 +39,32 @@ Toolchain:
 0: Tesla V100-SXM2-16GB (sm_70, 15.483 GiB / 15.782 GiB available)
 ```
 
+### Package Specifications and Evnironments
+
+#### Environment Variables
+
+```
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export MKL_DOMAIN_NUM_THREADS=1
+export JULIA_NUM_THREADS=1
+```
+
+#### Bloqade:
+
+Dependencies:
+- Bloqade.jl: v0.1.5
+
+For more detailed dependencies, please refer to [Manifest.toml](bloqade/Manifest.toml).
+
+#### QuTiP/Pulser:
+
+Dependencies:
+- pulser: 0.6.0
+- qutip: 4.7.0
+- numpy: 1.21.5
+- scipy: 1.8.0
+
 ### Results
 
 ![](ring.png)

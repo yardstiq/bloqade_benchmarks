@@ -1,7 +1,6 @@
 .CondaPkg
 *.err
 *.out
-**/**/data
 **/**/.pytest_cache
 **/**/.benchmarks
 **/**/__pycache__

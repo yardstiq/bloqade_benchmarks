@@ -14,6 +14,9 @@ experiment was measured multiple times and the miminum
 value of the time is picked as a stable estimator to
 eliminated noise from machine environment.
 
+Note, this method does not count the just-in-compile (JIT) time into the benchmark, which can be a large
+overhead for small tasks.
+
 ### Platform Info
 
 CPU & System:

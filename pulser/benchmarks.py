@@ -4,10 +4,7 @@ from pulser.waveforms import RampWaveform
 from pulser.devices import MockDevice
 
 import pytest
-import time
 import numpy as np
-import qutip
-import matplotlib.pyplot as plt
 
 # from matplotlib.pyplot import *
 # close('all')
@@ -82,14 +79,14 @@ def generate_ring_seq(L):
 # Simulate evolution
 nqubits_list = range(4,21) # 4:20
 @pytest.mark.parametrize('nqubits', nqubits_list)
-def test_sim(benchmark, nqubits):
+def test_ring(benchmark, nqubits):
     benchmark.group = "ring"
     sim = Simulation(generate_ring_seq(nqubits), sampling_rate=0.1)
     benchmark(sim.run, progress_bar=False)
 
 
 @pytest.mark.parametrize('nqubits', nqubits_list)
-def test_sim(benchmark, nqubits):
+def test_chain(benchmark, nqubits):
     benchmark.group = "chain"
     sim = Simulation(generate_chain_seq(nqubits), sampling_rate=0.1)
     benchmark(sim.run, progress_bar=False)

@@ -3,7 +3,9 @@ using CUDA
 using Adapt
 using Bloqade
 using BloqadeCUDA
+using Dates
 using Logging
+using LoggingExtras
 using TerminalLoggers
 using BenchmarkTools
 CUDA.allowscalar(false)

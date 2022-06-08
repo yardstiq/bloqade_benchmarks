@@ -1,5 +1,19 @@
 # Benchmark of Bloqade
 
+### Methodology
+
+the following aspects are reflected by our benchmark:
+
+- ODE algorithm: different ODE algorithm may result in different performance on different problem setup.
+- ODE solver stepping: adaptive stepping method can make the simulation faster in some cases.
+- hardware acceleration
+- abstraction overheads
+
+**measurement of the time**: each of the benchmark
+experiment was measured multiple times and the miminum
+value of the time is picked as a stable estimator to
+eliminated noise from machine environment.
+
 ### Platform Info
 
 CPU & System:

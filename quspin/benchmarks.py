@@ -2,6 +2,7 @@
 from quspin.operators import hamiltonian
 import numpy as np
 import pytest
+import time
 # import cProfile
 from quspin_rydberg import rydberg_hamiltonian_args
 
@@ -14,8 +15,7 @@ class Simulation:
         for psi in self._psi_t_iter:
             pass
 
-
-def generate_chain_hamiltonian(L):
+def generate_chain_evolution(L):
     # T - total duration
     # L - length of the chain in terms of num qubits, some integer
     # scale - distance between Rydberg atoms
@@ -62,9 +62,9 @@ def generate_chain_hamiltonian(L):
     h_Rydberg = hamiltonian(**kwargs)
 
 
-    psi0 = np.ones(h_Rydberg.Ns)/np.sqrt(h_Rydberg.Ns)
-
-    psi_t_iter = h_Rydberg.evolve(psi0,0,t_vals,iterate=True)
+    psi0 = np.zeros(h_Rydberg.Ns)
+    psi0[-1] = 1
+    psi_t_iter = h_Rydberg.evolve(psi0,0,t_vals,iterate=True,atol=1e-6,rtol=1e-3)
 
     return psi_t_iter
 
@@ -77,7 +77,7 @@ def generate_chain_hamiltonian(L):
     pr.print_stats(sort="time")
     """
 
-def generate_ring_hamiltonian(L):
+def generate_ring_evolution(L):
 
     t_rise = 0.2 
     t_fall = 0.2
@@ -123,24 +123,26 @@ def generate_ring_hamiltonian(L):
     kwargs = rydberg_hamiltonian_args(positions,Delta=Delta,Omega=Omega,C=mock_device_interaction_coeff)
     h_Rydberg = hamiltonian(**kwargs)
 
+    psi0 = np.zeros(h_Rydberg.Ns)
+    psi0[-1] = 1
 
-    psi0 = np.ones(h_Rydberg.Ns)/np.sqrt(h_Rydberg.Ns)
-
-    psi_t_iter = h_Rydberg.evolve(psi0,0,t_vals,iterate=True)
+    psi_t_iter = h_Rydberg.evolve(psi0,0,t_vals,iterate=True,atol=1e-6,rtol=1e-3)
 
     return psi_t_iter
 
 
 
-nqubits_list = range(4,21)
+nqubits_list = range(4,11)
 @pytest.mark.parametrize('nqubits', nqubits_list)
 def test_chain(benchmark, nqubits):
     benchmark.group = "chain"
-    sim = Simulation(generate_chain_hamiltonian(nqubits))
-    benchmark(sim.run)
+    sim = Simulation(generate_chain_evolution(nqubits))
+    benchmark(sim.run, progress_bar=False)
 
 @pytest.mark.parametrize('nqubits', nqubits_list)
 def test_ring(benchmark, nqubits):
     benchmark.group = "ring"
-    sim = Simulation(generate_ring_hamiltonian(nqubits))
-    benchmark(sim.run)
+    sim = Simulation(generate_ring_evolution(nqubits))
+    benchmark(sim.run, progress_bar=False)
+
+

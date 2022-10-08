@@ -88,14 +88,14 @@ nqubits_list = range(4,21) # 4:20
 def test_ring(benchmark, nqubits):
     benchmark.group = "ring"
     sim = Simulation(generate_ring_seq(nqubits), sampling_rate=0.1)
-    benchmark(sim.run, progress_bar=False)
+    benchmark(sim.run, progress_bar=False,atol=1e-6,rtol=1e-3)
 
 
 @pytest.mark.parametrize('nqubits', nqubits_list)
 def test_chain(benchmark, nqubits):
     benchmark.group = "chain"
     sim = Simulation(generate_chain_seq(nqubits), sampling_rate=0.1)
-    benchmark(sim.run, progress_bar=False)
+    benchmark(sim.run, progress_bar=False,atol=1e-6,rtol=1e-3)
 
 
 # sim = Simulation(seq, sampling_rate=0.1)

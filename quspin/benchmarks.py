@@ -8,11 +8,16 @@ from quspin_rydberg import rydberg_hamiltonian_args
 
 
 class Simulation:
-    def __init__(self,psi_t_iter):
-        self._psi_t_iter = psi_t_iter
+    def __init__(self,H,t_vals):
+        self._H = H
+        self._t_vals = t_vals
 
     def run(self):
-        for psi in self._psi_t_iter:
+        psi0 = np.zeros(self._H.Ns)
+        psi0[-1] = 1
+        psi_t_iter = self._H.evolve(psi0,0,self._t_vals,
+        iterate=True,atol=1e-6,rtol=1e-3)
+        for psi in psi_t_iter:
             pass
 
 def generate_chain_evolution(L):
@@ -25,7 +30,8 @@ def generate_chain_evolution(L):
     t_sweep = 3.6
 
     T = t_rise + t_fall + t_sweep
-
+    t_vals = np.arange(0,T+0.05,0.1)
+    
     # uniform problem
     C = 862690
     scale = 5.7
@@ -34,7 +40,6 @@ def generate_chain_evolution(L):
 
     # need to allow user variability here
     # args are: start, stop, number of vals (evenly spaced from [start, stop])
-    t_vals = np.linspace(0,T,11)
 
     # Need to split the waveforms into separate Omega and Delta from 
     # Pulser's "Pulse" format where they're combined
@@ -61,21 +66,7 @@ def generate_chain_evolution(L):
     kwargs = rydberg_hamiltonian_args(positions,Delta=Delta,Omega=Omega,C=C)
     h_Rydberg = hamiltonian(**kwargs)
 
-
-    psi0 = np.zeros(h_Rydberg.Ns)
-    psi0[-1] = 1
-    psi_t_iter = h_Rydberg.evolve(psi0,0,t_vals,iterate=True,atol=1e-6,rtol=1e-3)
-
-    return psi_t_iter
-
-    """
-    pr = cProfile.Profile()
-    pr.enable()
-    for i,psi_t in enumerate(psi_t_iter):
-        print("t/T= {:.4f} norm= {:.6e}".format(t_vals[i]/T,np.linalg.norm(psi_t)))
-    pr.disable()
-    pr.print_stats(sort="time")
-    """
+    return Simulation(h_Rydberg,t_vals)
 
 def generate_ring_evolution(L):
 
@@ -86,7 +77,7 @@ def generate_ring_evolution(L):
     T = t_rise + t_fall + t_sweep
 
     # taken from the Chain hamiltonian
-    t_vals = np.linspace(0,T,11)
+    t_vals = np.arange(0,T+0.05,0.1)
 
     ground_state_spacing = 1
     R_interatomic = 9
@@ -123,26 +114,21 @@ def generate_ring_evolution(L):
     kwargs = rydberg_hamiltonian_args(positions,Delta=Delta,Omega=Omega,C=mock_device_interaction_coeff)
     h_Rydberg = hamiltonian(**kwargs)
 
-    psi0 = np.zeros(h_Rydberg.Ns)
-    psi0[-1] = 1
-
-    psi_t_iter = h_Rydberg.evolve(psi0,0,t_vals,iterate=True,atol=1e-6,rtol=1e-3)
-
-    return psi_t_iter
+    return Simulation(h_Rydberg,t_vals)
 
 
 
-nqubits_list = range(4,11)
+nqubits_list = range(4,21)
 @pytest.mark.parametrize('nqubits', nqubits_list)
 def test_chain(benchmark, nqubits):
     benchmark.group = "chain"
-    sim = Simulation(generate_chain_evolution(nqubits))
-    benchmark(sim.run, progress_bar=False)
+    sim = generate_chain_evolution(nqubits)
+    benchmark(sim.run)
 
 @pytest.mark.parametrize('nqubits', nqubits_list)
 def test_ring(benchmark, nqubits):
     benchmark.group = "ring"
-    sim = Simulation(generate_ring_evolution(nqubits))
-    benchmark(sim.run, progress_bar=False)
+    sim = generate_chain_evolution(nqubits)
+    benchmark(sim.run)
 
 

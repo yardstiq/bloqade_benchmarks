@@ -30,7 +30,6 @@ def _process_static_and_dynamic_parameters(Natoms,Pars_list):
 def rydberg_hamiltonian_args(positions,Omega=1.0,Delta=1.0,C=862690,checks=False):
 
 	positions = np.array(positions).astype(np.float64)
-	print(positions.shape)
 
 	if positions.ndim != 1 and positions.ndim != 2:
 		raise TypeError("expecting positions to be 1D or 2D array")
@@ -65,15 +64,15 @@ def rydberg_hamiltonian_args(positions,Omega=1.0,Delta=1.0,C=862690,checks=False
 
 	RydbergInteract = [[J,i,j] for J,i,j in RydbergInteract if J>np.finfo(np.float64).eps]
 
-	Detuning_static_list = [[2*np.pi*Delta,i] for i,Delta in Delta_static.items()]
+	Detuning_static_list = [[Delta,i] for i,Delta in Delta_static.items()]
 
-	Rabi_static_list = [[np.pi*Omega,i] for i,Omega in Omega_static.items()]
-	Rabi_cc_static_list = [[np.pi*np.conj(Omega),i] for i,Omega_cc in Omega_static.items()]
+	Rabi_static_list = [[0.5*Omega,i] for i,Omega in Omega_static.items()]
+	Rabi_cc_static_list = [[0.5*np.conj(Omega),i] for i,Omega_cc in Omega_static.items()]
 
 	# this is not optimal for real-value drives, in general one should simplify these
-	Rabi_dynamic = [["+",[[np.pi,i]],Omega,()] for i,Omega in Omega_dynamic.items()]
-	Rabi_cc_dynamic = [["-",[[np.pi,i]],Omega_cc,()] for i,Omega_cc in Omega_cc_dynamic.items()]
-	Detuning_dynamic = [["n",[[2*np.pi,i]],Delta,()] for i,Delta in Delta_dynamic.items()]
+	Rabi_dynamic = [["+",[[0.5,i]],Omega,()] for i,Omega in Omega_dynamic.items()]
+	Rabi_cc_dynamic = [["-",[[0.5,i]],Omega_cc,()] for i,Omega_cc in Omega_cc_dynamic.items()]
+	Detuning_dynamic = [["n",[[1.0,i]],Delta,()] for i,Delta in Delta_dynamic.items()]
 
 	args = dict(check_symm=checks,check_herm=checks,check_pcon=checks,basis=basis)
 

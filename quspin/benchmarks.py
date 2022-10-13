@@ -33,7 +33,7 @@ def generate_chain_evolution(L):
     t_vals = np.arange(0,T+0.05,0.1)
     
     # uniform problem
-    C = 862690
+    C = 5420158.53
     scale = 5.7
 
     positions = scale * np.array([[i,0] for i in range(L)])

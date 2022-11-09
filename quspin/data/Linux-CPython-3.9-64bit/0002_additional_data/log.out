@@ -1,0 +1,44 @@
+============================= test session starts ==============================
+platform linux -- Python 3.9.13, pytest-7.1.3, pluggy-1.0.0
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /home/ubuntu/bloqade_benchmarks/quspin
+plugins: benchmark-3.4.1
+collected 34 items
+
+benchmarks.py ................
+
+=============================== warnings summary ===============================
+../../conda/envs/quspin-benchmark/lib/python3.9/site-packages/quspin/tools/expm_multiply_parallel_core/expm_multiply_parallel_core.py:4
+  /home/ubuntu/conda/envs/quspin-benchmark/lib/python3.9/site-packages/quspin/tools/expm_multiply_parallel_core/expm_multiply_parallel_core.py:4: DeprecationWarning: Please use `eye` from the `scipy.sparse` namespace, the `scipy.sparse.construct` namespace is deprecated.
+    from scipy.sparse.construct import eye
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
+----------------------------------------------------------------------------------- benchmark 'chain': 16 tests -----------------------------------------------------------------------------------
+Name (time in s)            Min                   Max                  Mean              StdDev                Median                 IQR            Outliers     OPS            Rounds  Iterations
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_chain[10]           7.2402 (7.66)         7.2760 (7.61)         7.2602 (7.64)       0.0150 (4.37)         7.2661 (7.66)       0.0245 (4.23)          2;0  0.1377 (0.13)          5           1
+test_chain[11]          12.6784 (13.41)       12.9174 (13.52)       12.7525 (13.42)      0.0959 (27.94)       12.7242 (13.41)      0.0987 (17.07)         1;0  0.0784 (0.07)          5           1
+test_chain[12]          23.8365 (25.22)       24.0974 (25.21)       23.9057 (25.16)      0.1097 (31.95)       23.8507 (25.14)      0.1031 (17.84)         1;0  0.0418 (0.04)          5           1
+test_chain[13]          48.2180 (51.01)       49.1031 (51.38)       48.5739 (51.12)      0.3249 (94.65)       48.5456 (51.17)      0.2902 (50.21)         2;0  0.0206 (0.02)          5           1
+test_chain[14]         104.4316 (110.48)     105.2160 (110.09)     104.8277 (110.32)     0.3180 (92.63)      104.7632 (110.44)     0.5144 (89.01)         2;0  0.0095 (0.01)          5           1
+test_chain[15]         226.6390 (239.77)     228.1724 (238.75)     227.4089 (239.33)     0.5677 (165.37)     227.5075 (239.83)     0.7178 (124.20)        2;0  0.0044 (0.00)          5           1
+test_chain[16]         499.5893 (528.54)     516.1165 (540.04)     508.9298 (535.61)     6.1439 (>1000.0)    509.6728 (537.27)     7.5764 (>1000.0)       2;0  0.0020 (0.00)          5           1
+test_chain[17]       1,459.7069 (>1000.0)  1,469.2632 (>1000.0)  1,465.1517 (>1000.0)    3.6106 (>1000.0)  1,465.9216 (>1000.0)    4.7234 (817.29)        2;0  0.0007 (0.00)          5           1
+test_chain[18]       3,161.5489 (>1000.0)  3,266.1895 (>1000.0)  3,214.9919 (>1000.0)   39.6956 (>1000.0)  3,225.2302 (>1000.0)   53.9984 (>1000.0)       2;0  0.0003 (0.00)          5           1
+test_chain[19]       6,813.0382 (>1000.0)  7,069.0020 (>1000.0)  6,943.5368 (>1000.0)  108.6942 (>1000.0)  6,907.3332 (>1000.0)  181.7450 (>1000.0)       2;0  0.0001 (0.00)          5           1
+test_chain[4]            0.9452 (1.0)          0.9557 (1.0)          0.9502 (1.0)        0.0046 (1.34)         0.9486 (1.0)        0.0081 (1.40)          2;0  1.0524 (1.0)           5           1
+test_chain[5]            1.2856 (1.36)         1.2939 (1.35)         1.2897 (1.36)       0.0034 (1.0)          1.2901 (1.36)       0.0058 (1.0)           2;0  0.7754 (0.74)          5           1
+test_chain[6]            1.6499 (1.75)         1.6688 (1.75)         1.6611 (1.75)       0.0074 (2.15)         1.6618 (1.75)       0.0104 (1.80)          2;0  0.6020 (0.57)          5           1
+test_chain[7]            2.2216 (2.35)         2.2536 (2.36)         2.2432 (2.36)       0.0124 (3.63)         2.2462 (2.37)       0.0103 (1.79)          1;1  0.4458 (0.42)          5           1
+test_chain[8]            3.0645 (3.24)         3.1092 (3.25)         3.0892 (3.25)       0.0176 (5.13)         3.0893 (3.26)       0.0268 (4.64)          2;0  0.3237 (0.31)          5           1
+test_chain[9]            4.5083 (4.77)         4.5393 (4.75)         4.5256 (4.76)       0.0114 (3.33)         4.5281 (4.77)       0.0134 (2.32)          2;0  0.2210 (0.21)          5           1
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Legend:
+  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+  OPS: Operations Per Second, computed as 1 / Mean
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/home/ubuntu/conda/envs/quspin-benchmark/lib/python3.9/site-packages/quspin/tools/evolution.py:340: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+============== 16 passed, 1 warning in 97330.46s (1 day, 3:02:10) ==============

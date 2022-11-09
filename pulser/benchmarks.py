@@ -6,6 +6,8 @@ from pulser.devices import MockDevice
 import pytest
 import numpy as np
 
+# pytest_plugins = ("myapp.testsupport.benchmark",)
+
 # from matplotlib.pyplot import *
 # close('all')
 
@@ -18,12 +20,16 @@ def generate_chain_seq(L, distance=5.7):
     delta_0 = -20.397969031369428
     delta_f =  9.179086064116243
 
-    t_rise = 200   # Rise time, in nanoseconds
-    t_fall = 200   # Fall time, in nanoseconds
-    t_sweep =3600   # Sweep time, in nanoseconds
+    t_rise = 200   # Rise time, in nanoseconds (0.2 microseconds)
+    t_fall = 200   # Fall time, in nanoseconds (0.2 microseconds)
+    t_sweep =3600   # Sweep time, in nanoseconds (3.6 microseconds)
 
+    # ramp linearly for t_rise ns, from 0 to Omega_max (units rad\microseconds)
     rise = Pulse.ConstantDetuning(RampWaveform(t_rise, 0., Omega_max), delta_0, 0.)
+    # ramp linearly for t_sweep ns, from delta_0 to delta_f
+    # pulse has constant amplitude followed by a detuning waveform
     sweep = Pulse.ConstantAmplitude(Omega_max, RampWaveform(t_sweep, delta_0, delta_f), 0.)
+    # ramp linearly for t_fall ns, from Omega_max to 0 
     fall = Pulse.ConstantDetuning(RampWaveform(t_fall, Omega_max, 0.), delta_f, 0.)
 
     # Define a sequence using the pulser interface
@@ -82,14 +88,14 @@ nqubits_list = range(4,21) # 4:20
 def test_ring(benchmark, nqubits):
     benchmark.group = "ring"
     sim = Simulation(generate_ring_seq(nqubits), sampling_rate=0.1)
-    benchmark(sim.run, progress_bar=False)
+    benchmark(sim.run, progress_bar=False,atol=1e-6,rtol=1e-3)
 
 
 @pytest.mark.parametrize('nqubits', nqubits_list)
 def test_chain(benchmark, nqubits):
     benchmark.group = "chain"
     sim = Simulation(generate_chain_seq(nqubits), sampling_rate=0.1)
-    benchmark(sim.run, progress_bar=False)
+    benchmark(sim.run, progress_bar=False,atol=1e-6,rtol=1e-3)
 
 
 # sim = Simulation(seq, sampling_rate=0.1)

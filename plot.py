@@ -12,9 +12,17 @@ with open(os.path.join('bloqade', 'data.json')) as f:
 with open(os.path.join('pulser', 'data', 'Linux-CPython-3.9-64bit', '0004_data.json')) as f:
     pulser_json = json.load(f)
 
+with open(os.path.join('quspin', 'data', 'Linux-CPython-3.9-64bit', '0001_data.json')) as f:
+    quspin_json = json.load(f)
+
 qutip_json = {
     'chain (CPU)': [pulser_json["benchmarks"][i]["stats"]["min"] * 1e9 for i in range(34) if pulser_json["benchmarks"][i]["group"] == "chain"],
     'ring (CPU)': [pulser_json["benchmarks"][i]["stats"]["min"] * 1e9 for i in range(34) if pulser_json["benchmarks"][i]["group"] == "ring"],
+}
+
+quspin_json = {
+    'chain (CPU)': [quspin_json["benchmarks"][i]["stats"]["min"] * 1e9 for i in range(34) if quspin_json["benchmarks"][i]["group"] == "chain"],
+    'ring (CPU)': [quspin_json["benchmarks"][i]["stats"]["min"] * 1e9 for i in range(34) if quspin_json["benchmarks"][i]["group"] == "ring"], 
 }
 
 speedup = {
@@ -33,6 +41,7 @@ df_chain_absolute = pd.DataFrame({
     'bloqade (CUDA)': bloqade_json['chain (CUDA)'],
     'bloqade (subspace,CPU)': bloqade_json['chain (subspace,CPU)'],
     'bloqade (subspace,CUDA)': bloqade_json['chain (subspace,CUDA)'],
+    'quspin (CPU)': quspin_json['chain (CPU)']
 })
 
 df_chain_speedup = pd.DataFrame({
@@ -54,6 +63,7 @@ df_ring_absolute = pd.DataFrame({
     'qutip (CPU)': qutip_json['ring (CPU)'],
     'bloqade (CPU)': bloqade_json['ring (CPU)'],
     'bloqade (CUDA)': bloqade_json['ring (CUDA)'],
+    'quspin (CPU)' : quspin_json['ring (CPU)']
 })
 
 df_ring_speedup = pd.DataFrame({
@@ -80,7 +90,7 @@ df_ring_speedup.plot(
     stacked=False,
 )
 
-fig.suptitle('Benchmark of QuTiP (via Pulser) vs Bloqade on 1D Chain Lattice', fontsize=16)
+fig.suptitle('Benchmark of QuTiP (via Pulser) vs Bloqade on 1D Ring Lattice', fontsize=16)
 ax1.set_title('absolute time')
 ax2.set_title('Bloqade speedup of exact simulation (qutip exact = 1)')
 
